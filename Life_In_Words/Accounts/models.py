@@ -5,3 +5,4 @@ from django.db import models
 class User(AbstractUser):
     '''Custom User'''
     email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'Life_Stories',
     'Accounts',
+    'Membership',
 ]
 
 MIDDLEWARE = [
@@ -143,9 +144,6 @@ MEDIA_URL = '/media/'
 
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    # ]
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -155,4 +153,12 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+
+DJOSER = {
+    'SERIALIZERS':
+    {
+        'user_create':'Accounts.serializers.UserCreateSerializer',
+    }
 }
