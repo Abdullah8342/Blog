@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #222;
+        }
+
+        /* ---------- TOP BAR ---------- */
+        .navbar {
+            background: #ffffff;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #111;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .write-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        /* ---------- ARTICLES ---------- */
+        .articles-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .article-card {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .article-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .article-title a {
+            text-decoration: none;
+            color: #111;
+        }
+
+        .article-title a:hover {
+            color: #2563eb;
+        }
+
+        .article-preview {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .read-more {
+            font-weight: 600;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .read-more:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            font-size: 1.2rem;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <header class="navbar">
+        <a href="/" class="brand">InkFlow</a>
+
+        <nav class="nav-actions">
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="nav-btn logout-btn">Logout</a>
+            <a href="{% url 'create' %}" class="nav-btn write-btn">Write Post</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-btn login-btn">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- ARTICLES -->
+    <section class="articles-container">
+        <h1 class="page-title">Latest Articles</h1>
+
+        {% if ArticleList %}
+        <div class="articles-grid">
+            {% for a in ArticleList %}
+            <article class="article-card">
+                <h2 class="article-title">
+                    <a href="{% url 'details' a.id %}">
+                        {{ a.title }}
+                    </a>
+                </h2>
+
+                <p class="article-preview">
+                    {{ a.content|truncatewords:25 }}
+                </p>
+
+                <a class="read-more" href="{% url 'details' a.id %}">
+                    Read More →
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No articles published yet.</p>
+        </div>
+        {% endif %}
+    </section>
+
+</body>
+
+</html>

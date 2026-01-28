@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Detail</title>
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #222;
+        }
+
+        /* Container */
+        .article-detail-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        /* Article Card */
+        .article-card {
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .article-content p {
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Comments Section */
+        .comments-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        .write-comment-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .write-comment-btn:hover {
+            background-color: #1e4fd8;
+        }
+
+        /* Comment Cards */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comment-card {
+            background: #f9fafb;
+            padding: 16px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .comment-user {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .comment-description {
+            color: #333;
+        }
+
+        .no-comments {
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="article-detail-container">
+        <article class="article-card">
+            <h1 class="article-title">{{ Article.title }}</h1>
+
+            <p class="article-meta">
+                Written by <strong>{{ Article.user }}</strong> •
+                {{ Article.created_at|date:"F j, Y, g:i a" }}
+            </p>
+
+            <div class="article-content">
+                <p>{{ Article.content }}</p>
+            </div>
+
+            <!-- Buttons Section -->
+            <div class="article-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+                {% if user.is_authenticated %}
+                {% if user == Article.user %}
+                <a href="{% url 'update' Article.id %}"
+                    style="padding: 8px 16px; background-color: #2563eb; color: white; border-radius: 8px; text-decoration: none;">
+                    Update
+                </a>
+
+                <form action="{% url 'delete' Article.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"
+                        style="padding: 8px 16px; background-color: #dc2626; color: white; border-radius: 8px; border: none; cursor: pointer;">
+                        Delete
+                    </button>
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+        </article>
+
+
+        <section class="comments-section">
+            <h2>Comments</h2>
+            <a href="{% url 'create_comment' Article.id %}" class="write-comment-btn">
+                Write a Comment
+            </a>
+
+            {% if Article.comment_set.all %}
+            <div class="comments-list">
+                {% for c in Article.comment_set.all %}
+                <div class="comment-card">
+                    <p class="comment-user">Username: {{ c.user }}</p>
+                    <p class="comment-description">Description: {{ c.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="no-comments">No comments yet.</p>
+            {% endif %}
+        </section>
+    </section>
+
+</body>
+
+</html>

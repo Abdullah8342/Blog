@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Create</title>
+    <style>
+        .comment-form-section {
+            max-width: 500px;
+            /* width of the card */
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .comment-form-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Make sure <p> wraps the field properly */
+        .comment-form-card p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        /* Label styling */
+        .comment-form-card label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        /* FORCE the input/textarea to stay inside the card */
+        .comment-form-card input[type="text"],
+        .comment-form-card textarea {
+            width: 100%;
+            /* ensures it fills the card */
+            max-width: 100%;
+            /* prevents overflow */
+            box-sizing: border-box;
+            /* includes padding in width */
+            padding: 10px 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        /* Focus effect */
+        .comment-form-card input[type="text"]:focus,
+        .comment-form-card textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        /* Button */
+        .submit-btn {
+            width: 100%;
+            padding: 12px 0;
+            font-weight: 600;
+            font-size: 1rem;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1e4fd8;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="comment-form-section">
+        <div class="comment-form-card">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="submit-btn">Post Comment</button>
+            </form>
+        </div>
+    </section>
+
+</body>
+
+</html>

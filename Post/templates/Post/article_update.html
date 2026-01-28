@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Update</title>
+    <style>
+        .article-update-section {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 15px;
+        }
+
+        .article-form-card {
+            background: #ffffff;
+            padding: 32px;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Styling for <p> that Django generates via as_p */
+        .article-form-card p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+        }
+
+        .article-form-card label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .article-form-card input[type="text"],
+        .article-form-card textarea {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .article-form-card input:focus,
+        .article-form-card textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 0;
+            font-weight: 600;
+            font-size: 1rem;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1e4fd8;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="article-update-section">
+        <div class="article-form-card">
+            <h1 class="form-title">Update Article</h1>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
+    </section>
+
+</body>
+
+</html>

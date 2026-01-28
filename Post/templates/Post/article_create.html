@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Create</title>
+    <style>
+        .form-fields p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .form-fields label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-fields input,
+        .form-fields textarea {
+            padding: 12px 14px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .form-fields input:focus,
+        .form-fields textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="article-form-container">
+        <h1 class="form-title">Create Article</h1>
+
+        <form method="post" class="article-form">
+            {% csrf_token %}
+
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="submit-btn">Save</button>
+        </form>
+    </section>
+
+</body>
+
+</html>
