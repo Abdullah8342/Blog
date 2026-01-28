@@ -4,47 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Detail</title>
+    <title>{{ Article.title }}</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
             background-color: #f4f6f8;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             color: #222;
         }
 
-        /* Container */
+        /* ---------- CONTAINER ---------- */
         .article-detail-container {
             max-width: 800px;
             margin: 60px auto;
             padding: 0 20px;
         }
 
-        /* Article Card */
+        /* ---------- ARTICLE CARD ---------- */
         .article-card {
             background: #ffffff;
-            padding: 32px;
             border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             margin-bottom: 40px;
         }
 
+        /* ---------- IMAGE ---------- */
+        .article-image {
+            width: 100%;
+            height: 320px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ---------- CONTENT ---------- */
+        .article-content-wrapper {
+            padding: 32px;
+        }
+
         .article-title {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 12px;
         }
 
         .article-meta {
             font-size: 0.9rem;
             color: #555;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .article-content p {
-            line-height: 1.7;
+            line-height: 1.75;
             font-size: 1.05rem;
+            margin-bottom: 16px;
         }
 
-        /* Comments Section */
+        /* ---------- ACTIONS ---------- */
+        .article-actions {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-edit {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* ---------- COMMENTS ---------- */
+        .comments-section {
+            margin-top: 40px;
+        }
+
         .comments-section h2 {
             font-size: 1.5rem;
             margin-bottom: 16px;
@@ -58,14 +117,9 @@
             color: white;
             border-radius: 8px;
             text-decoration: none;
-            transition: background-color 0.2s;
+            font-weight: 600;
         }
 
-        .write-comment-btn:hover {
-            background-color: #1e4fd8;
-        }
-
-        /* Comment Cards */
         .comments-list {
             display: flex;
             flex-direction: column;
@@ -73,7 +127,7 @@
         }
 
         .comment-card {
-            background: #f9fafb;
+            background: #ffffff;
             padding: 16px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
@@ -96,43 +150,48 @@
 </head>
 
 <body>
+
     <section class="article-detail-container">
+
         <article class="article-card">
-            <h1 class="article-title">{{ Article.title }}</h1>
 
-            <p class="article-meta">
-                Written by <strong>{{ Article.user }}</strong> •
-                {{ Article.created_at|date:"F j, Y, g:i a" }}
-            </p>
-
-            <div class="article-content">
-                <p>{{ Article.content }}</p>
+            {% if Article.image %}
+            <div class="article-image">
+                <img src="{{ Article.image.url }}" alt="{{ Article.title }}">
             </div>
+            {% endif %}
 
-            <!-- Buttons Section -->
-            <div class="article-actions" style="margin-top: 20px; display: flex; gap: 10px;">
-                {% if user.is_authenticated %}
-                {% if user == Article.user %}
-                <a href="{% url 'update' Article.id %}"
-                    style="padding: 8px 16px; background-color: #2563eb; color: white; border-radius: 8px; text-decoration: none;">
-                    Update
-                </a>
+            <div class="article-content-wrapper">
 
-                <form action="{% url 'delete' Article.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit"
-                        style="padding: 8px 16px; background-color: #dc2626; color: white; border-radius: 8px; border: none; cursor: pointer;">
-                        Delete
-                    </button>
-                </form>
+                <h1 class="article-title">{{ Article.title }}</h1>
+
+                <p class="article-meta">
+                    Written by <strong>{{ Article.user }}</strong> •
+                    {{ Article.created_at|date:"F j, Y, g:i a" }}
+                </p>
+
+                <div class="article-content">
+                    <p>{{ Article.content }}</p>
+                </div>
+
+                {% if user.is_authenticated and user == Article.user %}
+                <div class="article-actions">
+                    <a href="{% url 'update' Article.id %}" class="btn btn-edit">Update</a>
+
+                    <form action="{% url 'delete' Article.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </div>
                 {% endif %}
-                {% endif %}
+
             </div>
         </article>
 
-
+        <!-- COMMENTS -->
         <section class="comments-section">
             <h2>Comments</h2>
+
             <a href="{% url 'create_comment' Article.id %}" class="write-comment-btn">
                 Write a Comment
             </a>
@@ -141,8 +200,8 @@
             <div class="comments-list">
                 {% for c in Article.comment_set.all %}
                 <div class="comment-card">
-                    <p class="comment-user">Username: {{ c.user }}</p>
-                    <p class="comment-description">Description: {{ c.description }}</p>
+                    <p class="comment-user">{{ c.user }}</p>
+                    <p class="comment-description">{{ c.description }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -150,6 +209,7 @@
             <p class="no-comments">No comments yet.</p>
             {% endif %}
         </section>
+
     </section>
 
 </body>

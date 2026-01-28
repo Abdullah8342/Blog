@@ -73,7 +73,7 @@
         <div class="article-form-card">
             <h1 class="form-title">Update Article</h1>
 
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
 
