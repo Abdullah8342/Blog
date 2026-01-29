@@ -4,7 +4,7 @@ from .models import Article,Comment
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['user','title']
-    search_fields = ['title']
+    search_fields = ['title','tags']
 
 
 admin.site.register(Article,ArticleAdmin)

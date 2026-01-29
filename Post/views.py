@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
-
 from .models import Article
 from .forms import ArticleForm, CommentForm
 
@@ -24,6 +23,17 @@ class PostListView(ListView):
     model = Article
     template_name = "Post/article_list.html"
     context_object_name = "ArticleList"
+
+    def get_queryset(self):
+        try:
+            if self.request.GET['q']:
+                articles_list = Article.objects.filter(
+                    title__icontains=self.request.GET['q']
+                )
+                return articles_list
+            return super().get_queryset()
+        except:
+            return super().get_queryset()
 
 
 class PostDetailView(DetailView):
@@ -64,5 +74,4 @@ def create_comment(request, article_id):
         form = CommentForm()
         return render(request, "Post/comment_create.html", {"form": form})
     except:
-        return redirect('login')
-
+        return redirect("login")

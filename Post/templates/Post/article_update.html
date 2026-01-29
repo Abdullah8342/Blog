@@ -4,82 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Update</title>
+    <title>Update Create</title>
     <style>
-        .article-update-section {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 0 15px;
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        .article-form-card {
+        body {
+            background: #f4f6f8;
+            padding: 40px 20px;
+            color: #222;
+        }
+
+        /* ---------- CONTAINER ---------- */
+        .article-form-container {
+            max-width: 720px;
+            margin: 0 auto;
             background: #ffffff;
-            padding: 32px;
+            padding: 36px;
             border-radius: 14px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
         }
 
-        /* Styling for <p> that Django generates via as_p */
-        .article-form-card p {
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 28px;
+        }
+
+        /* ---------- FORM FIELDS ---------- */
+        .form-fields p {
             display: flex;
             flex-direction: column;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
         }
 
-        .article-form-card label {
+        .form-fields label {
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
 
-        .article-form-card input[type="text"],
-        .article-form-card textarea {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
+        .form-fields input,
+        .form-fields textarea,
+        .form-fields select {
             padding: 12px 14px;
             font-size: 1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #fff;
         }
 
-        .article-form-card input:focus,
-        .article-form-card textarea:focus {
+        .form-fields textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        /* ---------- MULTI SELECT (TAGS) ---------- */
+        .form-fields select[multiple] {
+            min-height: 120px;
+            padding: 10px;
+            background-color: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .form-fields select option {
+            padding: 8px 10px;
+            border-radius: 6px;
+        }
+
+        .form-fields select option:checked {
+            background-color: #2563eb;
+            color: #fff;
+        }
+
+        /* ---------- FOCUS ---------- */
+        .form-fields input:focus,
+        .form-fields textarea:focus,
+        .form-fields select:focus {
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
+        /* ---------- SUBMIT ---------- */
         .submit-btn {
-            width: 100%;
-            padding: 14px 0;
-            font-weight: 600;
-            font-size: 1rem;
+            margin-top: 10px;
+            padding: 12px 22px;
             background-color: #2563eb;
-            color: white;
-            border-radius: 10px;
+            color: #fff;
             border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
         .submit-btn:hover {
-            background-color: #1e4fd8;
+            background-color: #1e40af;
         }
+    </style>
+
     </style>
 </head>
 
 <body>
-    <section class="article-update-section">
-        <div class="article-form-card">
-            <h1 class="form-title">Update Article</h1>
+    <section class="article-form-container">
+        <h1 class="form-title">Update Article</h1>
 
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+        <form method="post" class="article-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-fields">
                 {{ form.as_p }}
+            </div>
 
-                <button type="submit" class="submit-btn">Update</button>
-            </form>
-        </div>
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
     </section>
 
 </body>

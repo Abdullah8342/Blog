@@ -50,6 +50,31 @@
             display: block;
         }
 
+        /* ---------- TAGS ---------- */
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0 28px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            color: #1e3a8a;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .tag:hover {
+            background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+            transform: translateY(-1px);
+        }
+
         /* ---------- CONTENT ---------- */
         .article-content-wrapper {
             padding: 32px;
@@ -169,6 +194,13 @@
                     Written by <strong>{{ Article.user }}</strong> •
                     {{ Article.created_at|date:"F j, Y, g:i a" }}
                 </p>
+                {% if Article.tags.all %}
+                <div class="article-tags">
+                    {% for tag in Article.tags.all %}
+                    <span class="tag">{{ tag.title }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
                 <div class="article-content">
                     <p>{{ Article.content }}</p>
